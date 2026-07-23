@@ -33,7 +33,13 @@ export default function Login() {
         body: JSON.stringify({ email, password })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        throw new Error(responseText || 'Server error. Please check database connection.');
+      }
 
       if (!response.ok) {
         if (response.status === 403 && data.requireVerification) {

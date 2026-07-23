@@ -35,7 +35,13 @@ export default function Register() {
         body: JSON.stringify({ firstName, email, password, role })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        throw new Error(responseText || 'Server error. Please check database connection.');
+      }
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to register');

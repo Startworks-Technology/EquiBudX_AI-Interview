@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import Hero from "./Hero";
+import AIModules from "./AIModules";
 import Problem from "./Problem";
 import Solution from "./Solution";
 import Pricing from "./Pricing";
@@ -11,6 +12,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <Hero />
+      <AIModules />
       <Problem />
       <Solution />
       <Pricing />

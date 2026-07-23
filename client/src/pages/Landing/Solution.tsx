@@ -1,69 +1,71 @@
-import { BookOpen, CheckCircle, Trophy } from "lucide-react";
+import { Bot, BarChart3, Award, CheckCircle2 } from "lucide-react";
 
 export default function Solution() {
   return (
-    <section id="solution" className="py-24 px-6 lg:px-12 bg-background">
+    <section id="solution" className="py-24 px-6 lg:px-12 bg-white border-b border-slate-200">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-5xl font-black text-foreground mb-6">
-            Everything you need to get <span className="text-primary">Hired.</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full inline-block mb-4">
+            Unified Institutional Platform
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6">
+            End-to-End Evaluation & Career Readiness Infrastructure
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            MockMate is a complete learning and testing platform designed specifically to bridge the gap between college and your first job.
+          <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
+            MockMate provides higher education institutions with an automated AI interview engine, cohort progress tracking, and verifiable candidate credentials.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-12">
-            
-            <div className="flex gap-6">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-7 h-7 text-primary" />
+        <div className="grid lg:grid-cols-3 gap-8">
+          
+          <div className="bg-slate-50 border border-slate-200/80 p-8 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-6 shadow-md shadow-blue-600/20">
+                <Bot className="w-6 h-6" />
               </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-2">1. Modern Courses</h3>
-                <p className="text-muted-foreground leading-relaxed">Learn exactly what the industry demands today. Master React, Node.js, System Design, and Data Structures through our premium video modules.</p>
-              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Adaptive AI Interviews</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                Conduct real-time technical and behavioral interview simulations tailored to modern engineering roles, providing instantaneous, objective feedback reports.
+              </p>
             </div>
-
-            <div className="flex gap-6">
-              <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-7 h-7 text-accent" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-2">2. Rigorous Assignments</h3>
-                <p className="text-muted-foreground leading-relaxed">Put your knowledge to the test. Take distraction-free Multiple Choice quizzes that simulate actual technical screening rounds.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-6">
-              <div className="w-14 h-14 rounded-2xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
-                <Trophy className="w-7 h-7 text-yellow-500" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-2">3. Verified Scorecards</h3>
-                <p className="text-muted-foreground leading-relaxed">Get a public, shareable resume link that proves your technical competency to recruiters, backed by our automated grading engine.</p>
-              </div>
-            </div>
-
+            <ul className="space-y-2 border-t border-slate-200/80 pt-5 text-xs font-medium text-slate-700">
+              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-600" /> Real-time Speech & Text Evaluation</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-600" /> Standardized Scoring Rubrics</li>
+            </ul>
           </div>
 
-          <div className="bg-slate-900 rounded-3xl p-8 shadow-2xl transform md:rotate-3">
-             <div className="w-full h-8 flex gap-2 mb-6">
-               <div className="w-3 h-3 rounded-full bg-red-500" />
-               <div className="w-3 h-3 rounded-full bg-yellow-500" />
-               <div className="w-3 h-3 rounded-full bg-green-500" />
-             </div>
-             <pre className="text-sm font-mono text-green-400">
-               <span className="text-blue-400">const</span> student = <span className="text-yellow-300">new</span> <span className="text-white">MockMateGraduate</span>();
-               <br/><br/>
-               <span className="text-blue-400">await</span> student.<span className="text-yellow-200">learn</span>(<span className="text-orange-300">'React'</span>);<br/>
-               <span className="text-blue-400">await</span> student.<span className="text-yellow-200">passAssignment</span>();<br/>
-               <br/>
-               console.<span className="text-yellow-200">log</span>(student.status);<br/>
-               <span className="text-slate-500">// Output: "HIRED!"</span>
-             </pre>
+          <div className="bg-slate-50 border border-slate-200/80 p-8 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-6 shadow-md shadow-emerald-600/20">
+                <BarChart3 className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Campus Placement Analytics</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                Equip placement officers and department heads with administrative dashboards to monitor student participation, skill gaps, and readiness benchmarks.
+              </p>
+            </div>
+            <ul className="space-y-2 border-t border-slate-200/80 pt-5 text-xs font-medium text-slate-700">
+              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Cohort Roster & CSV Onboarding</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Institutional Administrative Controls</li>
+            </ul>
           </div>
+
+          <div className="bg-slate-50 border border-slate-200/80 p-8 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div className="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center mb-6 shadow-md shadow-purple-600/20">
+                <Award className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Verifiable Skill Credentials</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                Generate shareable, tamper-proof candidate scorecards that demonstrate verified technical proficiency directly to corporate recruiting partners.
+              </p>
+            </div>
+            <ul className="space-y-2 border-t border-slate-200/80 pt-5 text-xs font-medium text-slate-700">
+              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-purple-600" /> Automated Assessment Evaluation</li>
+              <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-purple-600" /> Public Shareable Reports</li>
+            </ul>
+          </div>
+
         </div>
       </div>
     </section>

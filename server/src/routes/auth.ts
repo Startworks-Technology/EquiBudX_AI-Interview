@@ -16,74 +16,64 @@ function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// 1. Register - Creates unverified user and sends OTP
+// 1. Register - Direct Instant Account Creation (Email OTP Disabled for Demo)
 router.post('/register', async (req, res) => {
   try {
     const { firstName, lastName, email, password, role } = req.body;
 
+    if (!firstName || !email || !password) {
+      return res.status(400).json({ error: 'First name, email, and password are required.' });
+    }
+
     const existingUser = await prisma.user.findUnique({ where: { email } });
     
-    // If the user exists and is already verified
-    if (existingUser && existingUser.isVerified) {
+    if (existingUser) {
       return res.status(400).json({ error: 'Email already in use.' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
     const userRole = role || 'student';
     
-    const otpCode = generateOTP();
-    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 mins from now
+    let createdCollegeId: string | null = null;
 
-    // Upsert so if they try to register again before verifying, we just update the OTP
-    const user = await prisma.user.upsert({
-      where: { email },
-      update: {
-        passwordHash,
-        firstName,
-        lastName,
-        role: userRole,
-        verificationCode: otpCode,
-        verificationCodeExpires: expiresAt,
-        isVerified: false
-      },
-      create: {
+    if (userRole === 'college') {
+      const college = await prisma.college.create({
+        data: {
+          name: firstName,
+          domain: email.split('@')[1] || ''
+        }
+      });
+      createdCollegeId = college.id;
+    }
+
+    const user = await prisma.user.create({
+      data: {
         email,
         firstName,
-        lastName,
+        lastName: lastName || '',
         passwordHash,
         role: userRole,
-        verificationCode: otpCode,
-        verificationCodeExpires: expiresAt,
-        isVerified: false
+        collegeId: createdCollegeId,
+        isVerified: true // Auto-verify user directly
       },
     });
 
-    // Send email using Resend
-    try {
-      const result = await resend.emails.send({
-        from: FROM_EMAIL,
-        to: email,
-        subject: 'Verify your MockMate Account',
-        html: `
-          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
-            <h2 style="color: #0f172a;">Welcome to MockMate, ${firstName}!</h2>
-            <p style="color: #475569; font-size: 16px;">Please use the following 6-digit code to verify your account.</p>
-            <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
-              ${otpCode}
-            </div>
-            <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
-          </div>
-        `
-      });
-      console.log('Resend email send result:', JSON.stringify(result));
-    } catch (emailErr) {
-      console.error('Resend email notification error:', emailErr);
-    }
+    const token = jwt.sign(
+      { id: user.id, role: user.role, collegeId: user.collegeId }, 
+      JWT_SECRET, 
+      { expiresIn: '7d' }
+    );
 
     res.status(201).json({
-      message: 'Verification code sent to email',
-      requireVerification: true,
-      email: user.email
+      token,
+      user: { 
+        id: user.id, 
+        email: user.email, 
+        firstName: user.firstName, 
+        lastName: user.lastName, 
+        role: user.role,
+        collegeId: user.collegeId
+      }
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -205,39 +195,9 @@ router.post('/login', async (req, res) => {
     }
 
     if (!user.isVerified) {
-      // If valid password but not verified, send them an OTP again automatically
-      const otpCode = generateOTP();
-      const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-      
       await prisma.user.update({
         where: { email },
-        data: { verificationCode: otpCode, verificationCodeExpires: expiresAt }
-      });
-      
-      try {
-        await resend.emails.send({
-          from: FROM_EMAIL,
-          to: email,
-          subject: 'Verify your MockMate Account',
-          html: `
-            <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
-              <h2 style="color: #0f172a;">Welcome back, ${user.firstName}!</h2>
-              <p style="color: #475569; font-size: 16px;">Please use this code to verify your account.</p>
-              <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
-                ${otpCode}
-              </div>
-              <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
-            </div>
-          `
-        });
-      } catch (emailErr) {
-        console.warn('Resend email warning:', emailErr);
-      }
-
-      return res.status(403).json({ 
-        error: 'Please verify your email.',
-        requireVerification: true,
-        email: user.email
+        data: { isVerified: true }
       });
     }
 

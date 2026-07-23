@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_BASE_URL } from '../../config/api';
-import { ArrowRight, Lock, Mail, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { ArrowRight, Lock, Mail, ShieldCheck, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 
 export default function Login() {
   const [step, setStep] = useState<'login' | 'verify'>('login');
@@ -119,9 +119,14 @@ export default function Login() {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex flex-col justify-center px-8 sm:px-16 lg:px-24">
+      <div className="flex flex-col justify-center px-8 sm:px-16 lg:px-24 py-12">
         <div className="w-full max-w-sm mx-auto">
-          <Link to="/" className="text-2xl font-black tracking-tighter text-primary mb-12 block md:hidden">MockMate.</Link>
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
+              <ArrowLeft className="w-4 h-4" /> Back to Home
+            </Link>
+            <Link to="/" className="text-xl font-black tracking-tighter text-primary">MockMate.</Link>
+          </div>
           
           {step === 'login' ? (
             <>

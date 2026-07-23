@@ -2,20 +2,17 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_BASE_URL } from '../../config/api';
-import { ArrowRight, Lock, Mail, User as UserIcon, ShieldCheck, CheckCircle2, Building, Eye, EyeOff } from 'lucide-react';
+import { ArrowRight, Lock, Mail, User as UserIcon, ShieldCheck, CheckCircle2, Building, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 
 export default function Register() {
-  const [step, setStep] = useState<'register' | 'verify'>('register');
   const [role, setRole] = useState<'student' | 'college'>('student');
   
   // Registration Form State
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
-  // Verification State
-  const [otpCode, setOtpCode] = useState('');
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +29,7 @@ export default function Register() {
       const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, email, password, role })
+        body: JSON.stringify({ firstName, lastName, email, password, role })
       });
 
       const responseText = await response.text();
@@ -47,8 +44,10 @@ export default function Register() {
         throw new Error(data.error || 'Failed to register');
       }
 
-      if (data.requireVerification) {
-        setStep('verify');
+      // Instant Auto-Login upon registration
+      if (data.token && data.user) {
+        login(data.user, data.token);
+        navigate(`/${data.user.role}/dashboard`);
       }
     } catch (err: any) {
       setError(err.message);
@@ -117,13 +116,16 @@ export default function Register() {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex flex-col justify-center px-8 sm:px-16 lg:px-24">
+      <div className="flex flex-col justify-center px-8 sm:px-16 lg:px-24 py-12">
         <div className="w-full max-w-sm mx-auto">
-          <Link to="/" className="text-2xl font-black tracking-tighter text-primary mb-12 block md:hidden">MockMate.</Link>
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
+              <ArrowLeft className="w-4 h-4" /> Back to Home
+            </Link>
+            <Link to="/" className="text-xl font-black tracking-tighter text-primary">MockMate.</Link>
+          </div>
           
-          {step === 'register' ? (
-            <>
-              <h2 className="text-3xl font-bold text-foreground mb-2">Create Account</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-2">Create Account</h2>
               <p className="text-muted-foreground mb-8">Join the platform to access premium courses.</p>
 
               {error && <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm font-medium border border-red-200">{error}</div>}
@@ -131,7 +133,7 @@ export default function Register() {
               <form onSubmit={handleRegisterSubmit} className="space-y-4">
                 
                 <div className="space-y-1">
-                  <label className="text-sm font-semibold text-foreground">I am a...</label>
+                  <label className="text-sm font-semibold text-foreground">I am registering as...</label>
                   <div className="grid grid-cols-2 gap-3 mb-2">
                     <button
                       type="button"
@@ -145,23 +147,51 @@ export default function Register() {
                       onClick={() => setRole('college')}
                       className={`py-2 rounded-lg text-sm font-semibold transition-all border ${role === 'college' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:border-muted'}`}
                     >
-                      College Admin
+                      College / Institute
                     </button>
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-sm font-semibold text-foreground">First Name</label>
-                  <div className="relative">
-                    <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input 
-                      type="text" 
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                      placeholder="John"
-                      required
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-sm font-semibold text-foreground">
+                      {role === 'college' ? 'College / Institute Name' : 'First Name'}
+                    </label>
+                    <div className="relative">
+                      {role === 'college' ? (
+                        <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      ) : (
+                        <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      )}
+                      <input 
+                        type="text" 
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                        placeholder={role === 'college' ? 'National Institute of Tech' : 'John'}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-sm font-semibold text-foreground">
+                      {role === 'college' ? 'College Code' : 'Last Name'}
+                    </label>
+                    <div className="relative">
+                      {role === 'college' ? (
+                        <ShieldCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      ) : (
+                        <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      )}
+                      <input 
+                        type="text" 
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                        placeholder={role === 'college' ? 'NIT-2026' : 'Doe'}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -215,45 +245,6 @@ export default function Register() {
               <p className="mt-8 text-center text-sm text-muted-foreground">
                 Already have an account? <Link to="/login" className="font-semibold text-primary hover:underline">Log in</Link>
               </p>
-            </>
-          ) : (
-            <>
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                <ShieldCheck className="w-8 h-8 text-primary" />
-              </div>
-              <h2 className="text-3xl font-bold text-foreground mb-2">Check your email</h2>
-              <p className="text-muted-foreground mb-8">We sent a 6-digit verification code to <span className="font-bold text-slate-800">{email}</span></p>
-
-              {error && <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm font-medium border border-red-200">{error}</div>}
-
-              <form onSubmit={handleVerifySubmit} className="space-y-4">
-                <div className="space-y-1">
-                  <label className="text-sm font-semibold text-foreground">Verification Code</label>
-                  <input 
-                    type="text" 
-                    value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value)}
-                    className="w-full px-4 py-3 text-center tracking-[1em] font-mono text-2xl rounded-lg border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                    placeholder="------"
-                    maxLength={6}
-                    required
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={isLoading || otpCode.length !== 6}
-                  className="w-full bg-primary text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-70 mt-6"
-                >
-                  {isLoading ? 'Verifying...' : 'Verify Email'}
-                </button>
-              </form>
-              
-              <p className="mt-8 text-center text-sm text-muted-foreground">
-                Didn't receive the code? <button onClick={resendOtp} disabled={isLoading} className="font-semibold text-primary hover:underline disabled:opacity-50">Click to resend</button>
-              </p>
-            </>
-          )}
         </div>
       </div>
     </div>

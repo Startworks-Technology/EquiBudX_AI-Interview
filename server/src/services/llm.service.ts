@@ -3,9 +3,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import OpenAI from "openai";
 
 // Environment Variables
-const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
+const GROQ_API_KEY = process.env.GROQ_API_KEY || "dummy_key_for_init";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "dummy_key_for_init";
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "dummy_key_for_init";
 
 const groq = new Groq({ apiKey: GROQ_API_KEY });
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);

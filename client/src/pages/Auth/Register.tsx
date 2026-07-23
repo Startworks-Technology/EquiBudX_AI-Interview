@@ -1,34 +1,35 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { ArrowRight, User, Mail, Lock, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
+import { ArrowRight, Lock, Mail, User as UserIcon, ShieldCheck, CheckCircle2, Building, Eye, EyeOff } from 'lucide-react';
 
 export default function Register() {
   const [step, setStep] = useState<'register' | 'verify'>('register');
+  const [role, setRole] = useState<'student' | 'college'>('student');
   
-  // Registration State
+  // Registration Form State
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState<'student' | 'college'>('student');
   
   // Verification State
   const [otpCode, setOtpCode] = useState('');
-  
-  const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError(null);
+    setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ firstName, email, password, role })
@@ -56,7 +57,7 @@ export default function Register() {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-email', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/verify-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code: otpCode })
@@ -81,7 +82,7 @@ export default function Register() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/resend-otp', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/resend-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

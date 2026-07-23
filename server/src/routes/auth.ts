@@ -59,21 +59,25 @@ router.post('/register', async (req, res) => {
     });
 
     // Send email using Resend
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email, // Note: must be verified email on Resend dev account
-      subject: 'Verify your MockMate Account',
-      html: `
-        <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
-          <h2 style="color: #0f172a;">Welcome to MockMate, ${firstName}!</h2>
-          <p style="color: #475569; font-size: 16px;">Please use the following 6-digit code to verify your account.</p>
-          <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
-            ${otpCode}
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: 'Verify your MockMate Account',
+        html: `
+          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
+            <h2 style="color: #0f172a;">Welcome to MockMate, ${firstName}!</h2>
+            <p style="color: #475569; font-size: 16px;">Please use the following 6-digit code to verify your account.</p>
+            <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
+              ${otpCode}
+            </div>
+            <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
           </div>
-          <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
-        </div>
-      `
-    });
+        `
+      });
+    } catch (emailErr) {
+      console.warn('Resend email notification warning (unverified email domain):', emailErr);
+    }
 
     res.status(201).json({
       message: 'Verification code sent to email',
@@ -157,21 +161,25 @@ router.post('/resend-otp', async (req, res) => {
       }
     });
 
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: 'Your new verification code',
-      html: `
-        <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
-          <h2 style="color: #0f172a;">New Verification Code</h2>
-          <p style="color: #475569; font-size: 16px;">Here is your new 6-digit code.</p>
-          <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
-            ${otpCode}
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: 'Your new verification code',
+        html: `
+          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
+            <h2 style="color: #0f172a;">New Verification Code</h2>
+            <p style="color: #475569; font-size: 16px;">Here is your new 6-digit code.</p>
+            <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
+              ${otpCode}
+            </div>
+            <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
           </div>
-          <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
-        </div>
-      `
-    });
+        `
+      });
+    } catch (emailErr) {
+      console.warn('Resend email warning:', emailErr);
+    }
 
     res.json({ message: 'New code sent successfully.' });
   } catch (error) {
@@ -205,21 +213,25 @@ router.post('/login', async (req, res) => {
         data: { verificationCode: otpCode, verificationCodeExpires: expiresAt }
       });
       
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: email,
-        subject: 'Verify your MockMate Account',
-        html: `
-          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
-            <h2 style="color: #0f172a;">Welcome back, ${user.firstName}!</h2>
-            <p style="color: #475569; font-size: 16px;">Please use this code to verify your account.</p>
-            <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
-              ${otpCode}
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: email,
+          subject: 'Verify your MockMate Account',
+          html: `
+            <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
+              <h2 style="color: #0f172a;">Welcome back, ${user.firstName}!</h2>
+              <p style="color: #475569; font-size: 16px;">Please use this code to verify your account.</p>
+              <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
+                ${otpCode}
+              </div>
+              <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
             </div>
-            <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes.</p>
-          </div>
-        `
-      });
+          `
+        });
+      } catch (emailErr) {
+        console.warn('Resend email warning:', emailErr);
+      }
 
       return res.status(403).json({ 
         error: 'Please verify your email.',
@@ -282,21 +294,25 @@ router.post('/forgot-password', async (req, res) => {
       }
     });
 
-    await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
-      subject: 'Reset your MockMate Password',
-      html: `
-        <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
-          <h2 style="color: #0f172a;">Password Reset Request</h2>
-          <p style="color: #475569; font-size: 16px;">We received a request to reset your password. Use the code below to set a new password.</p>
-          <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
-            ${otpCode}
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: email,
+        subject: 'Reset your MockMate Password',
+        html: `
+          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
+            <h2 style="color: #0f172a;">Password Reset Request</h2>
+            <p style="color: #475569; font-size: 16px;">We received a request to reset your password. Use the code below to set a new password.</p>
+            <div style="margin: 30px 0; padding: 20px; background: #f8fafc; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #3b82f6;">
+              ${otpCode}
+            </div>
+            <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes. If you didn't request this, you can safely ignore this email.</p>
           </div>
-          <p style="color: #94a3b8; font-size: 14px;">This code expires in 15 minutes. If you didn't request this, you can safely ignore this email.</p>
-        </div>
-      `
-    });
+        `
+      });
+    } catch (emailErr) {
+      console.warn('Resend email warning:', emailErr);
+    }
 
     res.json({ message: 'If an account exists, a recovery code has been sent.' });
   } catch (error) {

@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm install --prefix server --legacy-peer-deps && npm install --prefix client --legacy-peer-deps && npm run build --prefix client"
+    "build": "npm install --prefix server --legacy-peer-deps && npx prisma db push --schema=server/prisma/schema.prisma && npm install --prefix client --legacy-peer-deps && npm run build --prefix client"
   }
 }

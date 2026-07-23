@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String      @id @default(nanoid(10))
+  email          String      @unique
+  passwordHash   String?
+  firstName      String
+  lastName       String?
+  role           String      @default("student") // 'student', 'college', 'admin'
+  collegeId      String?
+  college        College?    @relation(fields: [collegeId], references: [id])
+
+  isVerified              Boolean   @default(false)
+  verificationCode        String?
+  verificationCodeExpires DateTime?
+
+  resetPasswordCode       String?
+  resetPasswordExpires    DateTime?
+
+  scorecards       Scorecard[]
+  studentProfile   StudentProfile?
+  interviewRecords InterviewRecord[]
+  
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model StudentProfile {
+  id             Int      @id @default(autoincrement())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id])
+  
+  phone          String?
+  state          String?
+  country        String?
+  education      String?
+  
+  githubUrl      String?
+  linkedinUrl    String?
+  portfolioUrl   String?
+  otherLinks     Json?
+  skills         String[] // PostgreSQL array of strings
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Scorecard {
+  id               Int      @id @default(autoincrement())
+  studentId        String
+  student          User     @relation(fields: [studentId], references: [id])
+  
+  courseId         String   // String ID mapping to the frontend courses.ts file
+  courseTitle      String   // e.g. "Full Stack Web Development"
+  
+  scorePercentage  Float    // e.g. 85.5
+  passed           Boolean  // True if score >= 70
+  
+  createdAt        DateTime @default(now())
+}
+
+model InterviewRecord {
+  id             Int      @id @default(autoincrement())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  
+  // The role they interviewed for (e.g. "Backend Developer", "React Developer")
+  roleType       String   
+  
+  // Evaluation Results
+  score          Int
+  correctAnswers Int
+  wrongAnswers   Int
+  
+  // The raw Markdown string returned by the AI
+  feedbackReport String   @db.Text
+  
+  // Store the actual questions asked and answers given as a JSON array
+  qaPairs        Json     
+  
+  createdAt      DateTime @default(now())
+}
+
+model College {
+  id        String   @id @default(nanoid(10))
+  name      String
+  domain    String?
+  logoUrl   String?
+  
+  users     User[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -18,38 +18,38 @@ export default function InterviewRoom() {
   const currentModule = interviewModules.find(m => m.id === moduleId) || interviewModules[0];
   const currentSkill = currentModule.skills?.find(s => s.id === skillId) || currentModule.skills?.[0] || { title: 'General', questions: [] };
 
-  
+
   const [questions, setQuestions] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
-  
+
   const [isRecording, setIsRecording] = useState(false);
   const [textInput, setTextInput] = useState('');
   const [timeLeft, setTimeLeft] = useState(60);
   const [warnings, setWarnings] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Webcam & Recording state
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [isVideoRecording, setIsVideoRecording] = useState(false);
   const [showDownloadModal, setShowDownloadModal] = useState(false);
-  const [pendingFeedbackNav, setPendingFeedbackNav] = useState<{ 
-    report: string; 
+  const [pendingFeedbackNav, setPendingFeedbackNav] = useState<{
+    report: string;
     qaPairs: { question: string; answer: string }[];
     score?: number;
     correct?: number;
     wrong?: number;
     roleTitle?: string;
   } | null>(null);
-  
+
   const recognitionRef = useRef<any>(null);
   const timerRef = useRef<any>(null);
   const webcamRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const recordedChunksRef = useRef<Blob[]>([]);
-  
+
   // Initialize Webcam & MediaRecorder
   useEffect(() => {
     const initCamera = async () => {
@@ -62,10 +62,10 @@ export default function InterviewRoom() {
         setCameraActive(true);
 
         // Setup MediaRecorder
-        const options = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus') 
-          ? { mimeType: 'video/webm;codecs=vp9,opus' } 
+        const options = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
+          ? { mimeType: 'video/webm;codecs=vp9,opus' }
           : { mimeType: 'video/webm' };
-        
+
         const recorder = new MediaRecorder(stream, options);
         recorder.ondataavailable = (event) => {
           if (event.data && event.data.size > 0) {
@@ -74,7 +74,7 @@ export default function InterviewRoom() {
         };
         mediaRecorderRef.current = recorder;
         // Start recording immediately without timeslice to ensure proper video duration headers
-        recorder.start(); 
+        recorder.start();
         setIsVideoRecording(true);
       } catch (err: any) {
         console.warn('Camera access denied:', err);
@@ -109,15 +109,27 @@ export default function InterviewRoom() {
         });
       }
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('blur', handleVisibilityChange);
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('blur', handleVisibilityChange);
     };
   }, [questions, navigate]);
+
+  const getRoundLabel = () => {
+    if (roundType === 'full_drive') {
+      if (currentIndex < 2) return '👔 Round 1/3: Recruiter HR Screening';
+      if (currentIndex < 5) return '💻 Round 2/3: Technical Domain';
+      return '🏗️ Round 3/3: Behavioral STAR';
+    }
+    if (roundType === 'hr_screen') return '👔 Recruiter HR Screening';
+    if (roundType === 'tech_domain') return '💻 Technical Domain Round';
+    if (roundType === 'managerial') return '🏗️ Behavioral STAR Round';
+    return '🎯 Practice Round';
+  };
 
   // Load Questions & Setup Speech
   useEffect(() => {
@@ -143,7 +155,7 @@ export default function InterviewRoom() {
     setQuestions(q);
     setAnswers(new Array(q.length).fill(""));
 
-    
+
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
@@ -169,7 +181,7 @@ export default function InterviewRoom() {
 
       recognitionRef.current = recognition;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moduleId]);
 
   // Read current question & start timer
@@ -177,7 +189,7 @@ export default function InterviewRoom() {
     if (questions.length > 0 && currentIndex < questions.length) {
       speakText(questions[currentIndex]);
       setTextInput(''); // Clear previous answer
-      
+
       // Start 60s timer
       setTimeLeft(60);
       if (timerRef.current) clearInterval(timerRef.current);
@@ -192,22 +204,22 @@ export default function InterviewRoom() {
         });
       }, 1000);
     }
-    
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, questions]);
 
   const speakText = (text: string) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    
+
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
     const englishVoice = voices.find(v => v.lang.startsWith('en-') && v.name.includes('Google')) || voices[0];
     if (englishVoice) utterance.voice = englishVoice;
-    
+
     window.speechSynthesis.speak(utterance);
   };
 
@@ -226,12 +238,12 @@ export default function InterviewRoom() {
     const newAnswers = [...answers];
     newAnswers[currentIndex] = textInput || "No answer provided within time limit.";
     setAnswers(newAnswers);
-    
+
     if (isRecording) {
       recognitionRef.current?.stop();
     }
     window.speechSynthesis.cancel();
-    
+
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
@@ -243,7 +255,7 @@ export default function InterviewRoom() {
   const submitInterview = async (finalAnswers: string[]) => {
     setIsSubmitting(true);
     if (timerRef.current) clearInterval(timerRef.current);
-    
+
     try {
       const response = await fetch(`${API_BASE_URL}/api/interview/evaluate`, {
         method: 'POST',
@@ -259,12 +271,12 @@ export default function InterviewRoom() {
       });
 
       const data = await response.json();
-      
+
       // Save to backend database
       try {
         await fetch(`${API_BASE_URL}/api/interview/record`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('mockmate_token') || localStorage.getItem('token')}`
           },
@@ -300,8 +312,8 @@ export default function InterviewRoom() {
       }
 
       // Store feedback data and show modal
-      setPendingFeedbackNav({ 
-        report: data.report, 
+      setPendingFeedbackNav({
+        report: data.report,
         qaPairs: data.qaPairs,
         score: data.score,
         correct: data.correct,
@@ -361,7 +373,11 @@ export default function InterviewRoom() {
           </button>
           <div>
             <h1 className="font-bold text-slate-900">{currentModule.title} Interview</h1>
-            <p className="text-xs font-bold text-primary">{currentSkill.title}</p>
+            <p className="text-xs font-bold text-primary flex items-center gap-2">
+              <span>{currentSkill.title}</span>
+              <span className="text-slate-300">•</span>
+              <span className="text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">{getRoundLabel()}</span>
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -384,9 +400,63 @@ export default function InterviewRoom() {
         </div>
       </header>
 
+      {/* 3-Round Stepper Banner for Full Placement Drive */}
+      {roundType === 'full_drive' && (
+        <div className="bg-slate-900 text-white px-6 py-2.5 flex flex-wrap items-center justify-between shadow-inner flex-shrink-0 text-xs font-bold gap-3">
+          <div className="flex items-center gap-2">
+            <span className="bg-primary text-white text-[10px] uppercase font-black px-2.5 py-0.5 rounded tracking-wider shadow-sm">
+              Full Placement Drive
+            </span>
+            <span className="text-slate-400 hidden sm:inline">• 3 Rounds (7 Questions Total)</span>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            {/* Round 1 */}
+            <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
+              currentIndex < 2 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-black ring-2 ring-amber-500/20' : 'text-slate-400'
+            }`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${
+                currentIndex < 2 ? 'bg-amber-500 text-slate-950' : currentIndex >= 2 ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-400'
+              }`}>
+                {currentIndex >= 2 ? '✓' : '1'}
+              </span>
+              <span>Round 1: HR (2 Qs)</span>
+            </div>
+
+            <span className="text-slate-600">→</span>
+
+            {/* Round 2 */}
+            <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
+              currentIndex >= 2 && currentIndex < 5 ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-black ring-2 ring-blue-500/20' : 'text-slate-400'
+            }`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${
+                currentIndex >= 2 && currentIndex < 5 ? 'bg-blue-500 text-white' : currentIndex >= 5 ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-400'
+              }`}>
+                {currentIndex >= 5 ? '✓' : '2'}
+              </span>
+              <span>Round 2: Tech (3 Qs)</span>
+            </div>
+
+            <span className="text-slate-600">→</span>
+
+            {/* Round 3 */}
+            <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full transition-all ${
+              currentIndex >= 5 ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-black ring-2 ring-purple-500/20' : 'text-slate-400'
+            }`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${
+                currentIndex >= 5 ? 'bg-purple-500 text-white' : 'bg-slate-800 text-slate-400'
+              }`}>
+                3
+              </span>
+              <span>Round 3: Behavioral (2 Qs)</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Workspace */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        
+
         {/* Left Panel: Visuals & Controls */}
         <div className="w-full md:w-1/2 md:border-r border-slate-200 bg-slate-100 flex flex-col p-8 items-center justify-center relative">
           {/* AI Avatar */}
@@ -395,22 +465,21 @@ export default function InterviewRoom() {
             <div className={`absolute -inset-4 rounded-full border border-purple-300 opacity-30 ${isSubmitting ? 'animate-pulse' : ''}`}></div>
             {isSubmitting ? <Loader2 className="w-20 h-20 text-white animate-spin" /> : <Bot className="w-20 h-20 text-white" />}
           </div>
-          
+
           <h2 className="text-2xl font-black text-slate-800 mb-2">Senior {currentModule.title} AI</h2>
           <p className="text-slate-500 mb-12 text-center max-w-sm h-12">
             {isSubmitting ? "Evaluating your answers..." : isRecording ? "Listening..." : "Click the microphone to record your answer."}
           </p>
 
-          <button 
+          <button
             onClick={toggleRecording}
             disabled={isSubmitting}
-            className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
-              isRecording 
-                ? 'bg-red-500 hover:bg-red-600 text-white animate-bounce' 
-                : isSubmitting 
+            className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${isRecording
+                ? 'bg-red-500 hover:bg-red-600 text-white animate-bounce'
+                : isSubmitting
                   ? 'bg-slate-200 border-4 border-slate-300 text-slate-400 cursor-not-allowed'
                   : 'bg-white hover:bg-slate-50 border-4 border-primary text-primary'
-            }`}
+              }`}
           >
             {isRecording ? <MicOff className="w-8 h-8" /> : <Mic className="w-8 h-8" />}
           </button>
@@ -446,12 +515,23 @@ export default function InterviewRoom() {
         {/* Right Panel: Question & Answer */}
         <div className="w-full md:w-1/2 bg-white flex flex-col border-t md:border-t-0 border-slate-200">
           <div className="p-8 border-b border-slate-100 flex-shrink-0 bg-slate-50">
-            <h3 className="font-bold text-slate-500 uppercase tracking-wider text-xs mb-4">Question {currentIndex + 1}</h3>
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-extrabold text-slate-500 uppercase tracking-wider text-xs">
+                Question {currentIndex + 1} of {questions.length}
+              </span>
+              {roundType === 'full_drive' && (
+                <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs border border-primary/20">
+                  {currentIndex < 2 ? 'Round 1 Q' + (currentIndex + 1) + ' of 2 (HR Screening)' : 
+                   currentIndex < 5 ? 'Round 2 Q' + (currentIndex - 1) + ' of 3 (Technical Domain)' : 
+                   'Round 3 Q' + (currentIndex - 4) + ' of 2 (Behavioral STAR)'}
+                </span>
+              )}
+            </div>
             <p className="text-2xl font-bold text-slate-900 leading-snug">
               {questions[currentIndex]}
             </p>
           </div>
-          
+
           <div className="flex-1 p-6 flex flex-col">
             <h3 className="font-bold text-slate-500 uppercase tracking-wider text-xs mb-4 flex items-center gap-2">
               <Mic className="w-4 h-4 text-primary" />
@@ -464,7 +544,7 @@ export default function InterviewRoom() {
                 placeholder={isRecording ? "Listening to your answer..." : "Click the microphone to speak, or just start typing your answer here..."}
                 className="flex-1 w-full h-full p-6 bg-transparent resize-none outline-none text-slate-800 font-medium leading-relaxed placeholder:text-slate-400"
               />
-              
+
               {isRecording && (
                 <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-bold animate-pulse">
                   <div className="flex items-center gap-1">
@@ -479,17 +559,17 @@ export default function InterviewRoom() {
           </div>
 
           <div className="p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
-             <button 
-                onClick={handleNextQuestion}
-                disabled={isSubmitting}
-                className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2 disabled:bg-slate-300 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Evaluating...</>
-                ) : (
-                  <>{currentIndex === questions.length - 1 ? 'Submit Interview' : 'Next Question'} <Send className="w-5 h-5" /></>
-                )}
-              </button>
+            <button
+              onClick={handleNextQuestion}
+              disabled={isSubmitting}
+              className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-colors shadow-sm flex items-center gap-2 disabled:bg-slate-300 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <><Loader2 className="w-5 h-5 animate-spin" /> Evaluating...</>
+              ) : (
+                <>{currentIndex === questions.length - 1 ? 'Submit Interview' : 'Next Question'} <Send className="w-5 h-5" /></>
+              )}
+            </button>
           </div>
         </div>
 

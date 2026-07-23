@@ -121,7 +121,7 @@ export default function InterviewDashboard() {
     if (!setupModalModule) return;
     const modId = setupModalModule.id;
     setSetupModalModule(null);
-    navigate(`/student/interview/structured/${modId}?round=${config.roundType}&level=${config.experienceLevel}&bio=${encodeURIComponent(config.candidateBio || '')}`);
+    navigate(`/student/interview/practice/${modId}?round=${config.roundType}&level=${config.experienceLevel}&bio=${encodeURIComponent(config.candidateBio || '')}`);
   };
 
   const handleDelete = (id: string) => {

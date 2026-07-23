@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ShieldCheck, X, Eye, EyeOff } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 export default function Settings() {
   
@@ -21,7 +22,7 @@ export default function Settings() {
 
     try {
       const token = localStorage.getItem('mockmate_token');
-      const response = await fetch('http://localhost:5000/api/auth/change-password', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

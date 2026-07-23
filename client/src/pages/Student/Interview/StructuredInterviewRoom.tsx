@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Mic, MicOff, Send, Bot, Loader2, AlertTriangle, Clock, Camera, CameraOff, Video, Download, SkipForward } from 'lucide-react';
 import { interviewModules } from '../../../data/interviews';
 import { saveInterviewRecord } from './InterviewDashboard';
+import { API_BASE_URL } from '../../../config/api';
 
 export default function InterviewRoom() {
   const { id } = useParams();
@@ -244,7 +245,7 @@ export default function InterviewRoom() {
     if (timerRef.current) clearInterval(timerRef.current);
     
     try {
-      const response = await fetch('http://localhost:5000/api/interview/evaluate', {
+      const response = await fetch(`${API_BASE_URL}/api/interview/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -261,7 +262,7 @@ export default function InterviewRoom() {
       
       // Save to backend database
       try {
-        await fetch('http://localhost:5000/api/interview/record', {
+        await fetch(`${API_BASE_URL}/api/interview/record`, {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../../config/api';
 import { ArrowLeft, Mic, MicOff, Settings, Send, Bot, User, Loader2 } from 'lucide-react';
 
 interface Message {
@@ -100,7 +101,7 @@ export default function InterviewRoom() {
     setIsProcessing(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/interview/chat', {
+      const response = await fetch(`${API_BASE_URL}/api/interview/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

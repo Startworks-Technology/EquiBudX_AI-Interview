@@ -3,6 +3,7 @@ import { Camera, MapPin, GraduationCap, Github, Linkedin, Link as LinkIcon, Plus
 import { Country, State } from 'country-state-city';
 import Select from 'react-select';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_BASE_URL } from '../../config/api';
 
 export default function Profile() {
   const { user } = useAuth();
@@ -30,7 +31,7 @@ export default function Profile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('mockmate_token');
-        const res = await fetch('http://localhost:5000/api/user/profile', {
+        const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -60,7 +61,7 @@ export default function Profile() {
     setIsSaving(true);
     try {
       const token = localStorage.getItem('mockmate_token');
-      const res = await fetch('http://localhost:5000/api/user/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

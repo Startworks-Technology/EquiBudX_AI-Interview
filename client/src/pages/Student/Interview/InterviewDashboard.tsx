@@ -4,6 +4,7 @@ import { Mic, PlayCircle, Clock, ChevronRight, Star, Code, Server, Database, Net
 import { interviewModules } from '../../../data/interviews';
 import type { InterviewModule } from '../../../data/interviews';
 import { InterviewSetupModal } from './InterviewSetupModal';
+import { API_BASE_URL } from '../../../config/api';
 
 export interface InterviewRecord {
   id: string;
@@ -74,7 +75,7 @@ export default function InterviewDashboard() {
       }
     })();
 
-    fetch('http://localhost:5000/api/interview/records', {
+    fetch(`${API_BASE_URL}/api/interview/records`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('mockmate_token') || localStorage.getItem('token')}` }
     })
     .then(res => {

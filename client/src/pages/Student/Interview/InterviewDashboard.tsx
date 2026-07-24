@@ -44,6 +44,7 @@ const IconMap: Record<string, any> = {
 
 const BRANCH_TABS: { id: string; label: string }[] = [
   { id: 'All', label: 'All Branches' },
+  { id: 'general', label: '🌟 General & HR' },
   { id: 'cs_it', label: '💻 CSE & IT' },
   { id: 'ece', label: '⚡ Electronics & ECE' },
   { id: 'ai_ds', label: '🤖 AI & Data Science' },

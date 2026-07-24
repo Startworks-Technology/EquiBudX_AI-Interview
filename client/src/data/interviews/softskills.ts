@@ -3,7 +3,7 @@ import type { InterviewModule } from './types';
 export const softskillsModule: InterviewModule = {
   id: "softskills",
   title: "Behavioral & HR Prep",
-  branch: "business",
+  branch: "general",
   category: "Soft Skills",
   description: "Communication, conflict resolution, teamwork, and leadership.",
   icon: "atom", 

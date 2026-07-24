@@ -3,7 +3,8 @@ export type AcademicBranch =
   | 'ece'             // Electronics & Communication / Embedded
   | 'ai_ds'           // AI & Data Science
   | 'business'        // Product & Business Management
-  | 'core_eng';       // Mechanical, Electrical & Civil
+  | 'core_eng'        // Mechanical, Electrical & Civil
+  | 'general';        // General & HR Modules
 
 export type InterviewRoundType = 
   | 'hr_screen'       // Recruiter HR Screening Perspective

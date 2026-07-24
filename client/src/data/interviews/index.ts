@@ -13,8 +13,10 @@ import { qaModule } from './qa';
 import { softskillsModule } from './softskills';
 import { eceEmbeddedModule, iotModule } from './ece';
 import { productManagerModule, businessAnalystModule } from './business';
+import { behavioralModule } from './behavioral';
 
 export const interviewModules: InterviewModule[] = [
+  behavioralModule,
   frontendModule,
   backendModule,
   fullstackModule,

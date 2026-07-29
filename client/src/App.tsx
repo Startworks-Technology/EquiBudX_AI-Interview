@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import FloatingFeedback from './components/FloatingFeedback';
 
 // Public Pages
 import LandingPage from './pages/Landing';
@@ -39,6 +40,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <FloatingFeedback />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />

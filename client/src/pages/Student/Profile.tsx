@@ -30,7 +30,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('mockmate_token');
+        const token = localStorage.getItem('EquiBudX_token');
         const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -60,7 +60,7 @@ export default function Profile() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const token = localStorage.getItem('mockmate_token');
+      const token = localStorage.getItem('EquiBudX_token');
       const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
         method: 'PUT',
         headers: {

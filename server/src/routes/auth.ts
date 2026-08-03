@@ -8,7 +8,7 @@ import { authenticateToken, AuthRequest } from '../middleware/auth';
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key-for-mvp';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_izhbow88_DXZBt56rHoDtA9vTR62Y5sKX';
-const FROM_EMAIL = process.env.FROM_EMAIL || 'MockMate Auth <onboarding@resend.dev>';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'EquiBudX Auth <onboarding@resend.dev>';
 const resend = new Resend(RESEND_API_KEY);
 
 // Helper to generate a 6-digit code
@@ -259,7 +259,7 @@ router.post('/forgot-password', async (req, res) => {
       await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
-        subject: 'Reset your MockMate Password',
+        subject: 'Reset your EquiBudX Password',
         html: `
           <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center;">
             <h2 style="color: #0f172a;">Password Reset Request</h2>

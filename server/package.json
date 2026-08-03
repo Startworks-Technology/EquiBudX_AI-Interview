@@ -1,7 +1,7 @@
 {
-  "name": "mockmate-server",
+  "name": "equibudx-server",
   "version": "1.0.0",
-  "description": "MockMate Backend",
+  "description": "EquiBudX Backend",
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",

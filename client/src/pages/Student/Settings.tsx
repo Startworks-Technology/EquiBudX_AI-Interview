@@ -21,7 +21,7 @@ export default function Settings() {
     setIsChangingPwd(true);
 
     try {
-      const token = localStorage.getItem('mockmate_token');
+      const token = localStorage.getItem('EquiBudX_token');
       const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
         method: 'POST',
         headers: { 

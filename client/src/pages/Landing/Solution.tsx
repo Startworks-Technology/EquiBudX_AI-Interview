@@ -12,7 +12,7 @@ export default function Solution() {
             End-to-End Evaluation & Career Readiness Infrastructure
           </h2>
           <p className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto font-normal leading-relaxed">
-            MockMate provides higher education institutions with an automated AI interview engine, cohort progress tracking, and verifiable candidate credentials.
+            EquiBudX provides higher education institutions with an automated AI interview engine, cohort progress tracking, and verifiable candidate credentials.
           </p>
         </div>
 

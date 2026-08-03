@@ -8,7 +8,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 h-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 z-50 px-6 lg:px-12 flex items-center justify-between">
       <div className="flex items-center gap-10">
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-black tracking-tighter text-slate-900">MockMate<span className="text-blue-600">.</span></span>
+          <span className="text-2xl font-black tracking-tighter text-slate-900">EquiBudX<span className="text-blue-600">.</span></span>
           <span className="hidden sm:inline-flex items-center gap-1 bg-slate-100 text-slate-700 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-slate-200">
             <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> Institutional AI
           </span>

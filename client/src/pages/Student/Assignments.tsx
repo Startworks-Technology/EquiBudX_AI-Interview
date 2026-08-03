@@ -370,7 +370,7 @@ export default function Assignments() {
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement("a");
                 link.href = image;
-                link.download = `MockMate_Certificate_${mod.title.replace(/\s+/g, '_')}.png`;
+                link.download = `EquiBudX_Certificate_${mod.title.replace(/\s+/g, '_')}.png`;
                 link.click();
               } catch (err) {
                 console.error("Failed to download image", err);
@@ -408,7 +408,7 @@ export default function Assignments() {
                 
                 <div className="absolute bottom-6 left-12 text-left">
                   <div className="border-b border-slate-300 w-48 mb-3"></div>
-                  <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">MockMate Platform</p>
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">EquiBudX Platform</p>
                 </div>
                 
                 <div className="absolute bottom-6 right-12 text-right">

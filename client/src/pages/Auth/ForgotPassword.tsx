@@ -84,7 +84,7 @@ export default function ForgotPassword() {
         <div className="relative z-10 max-w-md">
           <h1 className="text-4xl font-black mb-6 leading-tight">Recover your account.</h1>
           <p className="text-lg text-slate-300 leading-relaxed">
-            Don't worry, it happens to the best of us. Let's get you back into MockMate.
+            Don't worry, it happens to the best of us. Let's get you back into EquiBudX.
           </p>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default function ForgotPassword() {
       {/* Right Side - Form */}
       <div className="flex flex-col justify-center px-8 sm:px-16 lg:px-24">
         <div className="w-full max-w-sm mx-auto">
-          <Link to="/" className="text-2xl font-black tracking-tighter text-primary mb-12 block md:hidden">MockMate.</Link>
+          <Link to="/" className="text-2xl font-black tracking-tighter text-primary mb-12 block md:hidden">EquiBudX.</Link>
           
           {successMsg ? (
             <div className="text-center">

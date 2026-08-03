@@ -22,9 +22,9 @@ export interface InterviewRecord {
 
 export function saveInterviewRecord(record: any) {
   try {
-    const existing = JSON.parse(localStorage.getItem('mockmate_interview_history') || '[]');
+    const existing = JSON.parse(localStorage.getItem('EquiBudX_interview_history') || '[]');
     existing.unshift(record);
-    localStorage.setItem('mockmate_interview_history', JSON.stringify(existing));
+    localStorage.setItem('EquiBudX_interview_history', JSON.stringify(existing));
   } catch (e) {
     console.error('Failed to save interview record', e);
   }
@@ -70,14 +70,14 @@ export default function InterviewDashboard() {
   useEffect(() => {
     const localRecords: InterviewRecord[] = (() => {
       try {
-        return JSON.parse(localStorage.getItem('mockmate_interview_history') || '[]');
+        return JSON.parse(localStorage.getItem('EquiBudX_interview_history') || '[]');
       } catch (e) {
         return [];
       }
     })();
 
     fetch(`${API_BASE_URL}/api/interview/records`, {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('mockmate_token') || localStorage.getItem('token')}` }
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('EquiBudX_token') || localStorage.getItem('token')}` }
     })
     .then(res => {
       if (!res.ok) return [];
@@ -128,9 +128,9 @@ export default function InterviewDashboard() {
   const handleDelete = (id: string) => {
     setHistory(prev => prev.filter(h => h.id !== id));
     try {
-      const localRecords: InterviewRecord[] = JSON.parse(localStorage.getItem('mockmate_interview_history') || '[]');
+      const localRecords: InterviewRecord[] = JSON.parse(localStorage.getItem('EquiBudX_interview_history') || '[]');
       const filtered = localRecords.filter(h => h.id !== id);
-      localStorage.setItem('mockmate_interview_history', JSON.stringify(filtered));
+      localStorage.setItem('EquiBudX_interview_history', JSON.stringify(filtered));
     } catch (e) {
       console.error("Failed to delete local record", e);
     }

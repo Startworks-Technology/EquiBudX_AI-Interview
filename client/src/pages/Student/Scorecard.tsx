@@ -25,7 +25,7 @@ export default function Scorecard() {
       const image = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = image;
-      link.download = "MockMate_Scorecard.png";
+      link.download = "EquiBudX_Scorecard.png";
       link.click();
     } catch (err) {
       console.error("Failed to download image", err);

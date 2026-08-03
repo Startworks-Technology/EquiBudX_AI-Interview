@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
@@ -21,7 +22,7 @@ app.use('/api/college', collegeRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'MockMate Backend is running!' });
+  res.json({ status: 'ok', message: 'EquiBudX Backend is running!' });
 });
 
 // Global Error Handler for Serverless stability

@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function seedAdmin() {
   console.log('🌱 Seeding Super Admin account...');
 
-  const email = 'admin@equibudx.com';
+  const email = 'admin@EquiBudX.com';
   const password = 'adminpassword123';
 
   try {

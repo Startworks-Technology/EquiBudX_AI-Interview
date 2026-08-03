@@ -111,7 +111,7 @@ export default function Login() {
       <div className="hidden md:flex flex-col justify-center items-center bg-slate-900 text-white p-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
         <div className="relative z-10 max-w-md">
-          <h1 className="text-4xl font-black mb-6 leading-tight">Welcome back to MockMate.</h1>
+          <h1 className="text-4xl font-black mb-6 leading-tight">Welcome back to EquiBudX.</h1>
           <p className="text-lg text-slate-300 leading-relaxed">
             Log in to continue your journey. Practice technical interviews, upskill, and get hired.
           </p>
@@ -125,7 +125,7 @@ export default function Login() {
             <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
-            <Link to="/" className="text-xl font-black tracking-tighter text-primary">MockMate.</Link>
+            <Link to="/" className="text-xl font-black tracking-tighter text-primary">EquiBudX.</Link>
           </div>
           
           {step === 'login' ? (

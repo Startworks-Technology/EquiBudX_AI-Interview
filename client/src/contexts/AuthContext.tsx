@@ -27,16 +27,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check local storage for existing session
-    const storedToken = localStorage.getItem('mockmate_token');
-    const storedUser = localStorage.getItem('mockmate_user');
+    const storedToken = localStorage.getItem('EquiBudX_token');
+    const storedUser = localStorage.getItem('EquiBudX_user');
 
     if (storedToken && storedUser) {
       try {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
       } catch (e) {
-        localStorage.removeItem('mockmate_token');
-        localStorage.removeItem('mockmate_user');
+        localStorage.removeItem('EquiBudX_token');
+        localStorage.removeItem('EquiBudX_user');
       }
     }
     setIsLoading(false);
@@ -45,15 +45,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = (userData: User, newToken: string) => {
     setUser(userData);
     setToken(newToken);
-    localStorage.setItem('mockmate_token', newToken);
-    localStorage.setItem('mockmate_user', JSON.stringify(userData));
+    localStorage.setItem('EquiBudX_token', newToken);
+    localStorage.setItem('EquiBudX_user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('mockmate_token');
-    localStorage.removeItem('mockmate_user');
+    localStorage.removeItem('EquiBudX_token');
+    localStorage.removeItem('EquiBudX_user');
   };
 
   return (

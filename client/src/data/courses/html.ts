@@ -21,7 +21,7 @@ HTML (HyperText Markup Language) is the standard markup language for creating We
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MockMate Learning</title>
+    <title>EquiBudX Learning</title>
 </head>
 <body>
     <h1>Welcome to Web Development</h1>

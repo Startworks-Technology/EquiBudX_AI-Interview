@@ -69,7 +69,7 @@ export default function AIModules() {
             Explore the Core Application Modules
           </h2>
           <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
-            Everything integrated inside MockMate — built specifically to train degree students and empower college placement cells.
+            Everything integrated inside EquiBudX — built specifically to train degree students and empower college placement cells.
           </p>
         </div>
 

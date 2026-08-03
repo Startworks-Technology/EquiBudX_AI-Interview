@@ -278,7 +278,7 @@ export default function InterviewRoom() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('mockmate_token') || localStorage.getItem('token')}`
+            'Authorization': `Bearer ${localStorage.getItem('EquiBudX_token') || localStorage.getItem('token')}`
           },
           body: JSON.stringify({
             roleType: moduleId,
@@ -334,7 +334,7 @@ export default function InterviewRoom() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `mockmate_interview_${moduleId}_${Date.now()}.webm`;
+    a.download = `EquiBudX_interview_${moduleId}_${Date.now()}.webm`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

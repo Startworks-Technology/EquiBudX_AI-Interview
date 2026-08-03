@@ -10,7 +10,7 @@ export default function FAQ() {
     },
     {
       q: "Can my college pay for me?",
-      a: "Absolutely. We have a College Admin portal. If your college is partnered with MockMate, your access is completely free."
+      a: "Absolutely. We have a College Admin portal. If your college is partnered with EquiBudX, your access is completely free."
     }
   ];
 

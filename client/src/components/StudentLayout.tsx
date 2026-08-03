@@ -27,7 +27,7 @@ export default function StudentLayout() {
       <aside className={`absolute md:relative h-full transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0 bg-white border-r border-slate-200 z-50 shadow-xl md:shadow-sm ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-64 -translate-x-full md:w-0 md:translate-x-0 border-r-0'}`}>
         <div className="w-64 h-full flex flex-col">
           <div className="h-16 flex items-center px-6 border-b border-slate-100 flex-shrink-0">
-            <h1 className="text-2xl font-black text-primary tracking-tight">MockMate.</h1>
+            <h1 className="text-2xl font-black text-primary tracking-tight">EquiBudX.</h1>
           </div>
 
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">

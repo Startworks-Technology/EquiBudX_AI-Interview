@@ -28,7 +28,7 @@ function WelcomeHeader({ username }) {
   return (
     <header className="welcome-banner">
       <h1>Hello, {username}!</h1>
-      <p>Welcome back to MockMate.</p>
+      <p>Welcome back to EquiBudX.</p>
     </header>
   );
 }

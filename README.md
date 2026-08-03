@@ -1,6 +1,6 @@
 # Mock_Mate
 
-MockMate is an AI-powered technical interview practice and college assessment platform.
+EquiBudX is an AI-powered technical interview practice and college assessment platform.
 
 ## Features
 - **Student Portal**: AI Mock Interviews, Structured Practice, Scorecards, and Learning Resources.

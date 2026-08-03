@@ -1,4 +1,4 @@
-# Mock_Mate
+# Equibudx - AI Interview
 
 EquiBudX is an AI-powered technical interview practice and college assessment platform.
 

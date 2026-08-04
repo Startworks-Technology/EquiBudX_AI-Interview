@@ -35,9 +35,7 @@ export default function Pricing() {
             </div>
             <p className="text-slate-600 text-sm mb-6">Direct institutional partnership for 3rd & 4th-year degree student cohorts.</p>
             
-            <div className="mb-6">
-              <a href="mailto:lionel@equibudx.com" className="text-base font-bold text-slate-900 hover:text-blue-600 transition-colors">Contact us at lionel@equibudx.com</a>
-            </div>
+
 
             <ul className="space-y-3 mb-8">
               <li className="flex items-center gap-3 text-slate-700 font-medium text-xs">
@@ -55,12 +53,12 @@ export default function Pricing() {
             </ul>
           </div>
 
-          <button 
-            onClick={() => navigate('/register')}
-            className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-600 transition-colors shadow-sm"
+          <a 
+            href="mailto:lionel@equibudx.com"
+            className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-600 transition-colors shadow-sm block text-center"
           >
-            Onboard Institution
-          </button>
+            Contact us
+          </a>
         </div>
 
         {/* Card 2: Individual Student Pass */}
@@ -78,9 +76,7 @@ export default function Pricing() {
             </div>
             <p className="text-slate-600 text-sm mb-6">Self-paced 12-month access to interview prep, scorecards, and skill assessments.</p>
             
-            <div className="mb-6">
-              <a href="mailto:lionel@equibudx.com" className="text-base font-bold text-slate-900 hover:text-blue-600 transition-colors">Contact us at lionel@equibudx.com</a>
-            </div>
+
 
             <ul className="space-y-3 mb-8">
               <li className="flex items-center gap-3 text-slate-700 font-medium text-xs">
@@ -98,12 +94,12 @@ export default function Pricing() {
             </ul>
           </div>
 
-          <button 
-            onClick={() => navigate('/register')}
-            className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-500 transition-colors shadow-sm"
+          <a 
+            href="mailto:lionel@equibudx.com"
+            className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-500 transition-colors shadow-sm block text-center"
           >
-            Get Student Access
-          </button>
+            Contact us
+          </a>
         </div>
 
       </div>

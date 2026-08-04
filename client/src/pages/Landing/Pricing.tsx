@@ -36,8 +36,7 @@ export default function Pricing() {
             <p className="text-slate-600 text-sm mb-6">Direct institutional partnership for 3rd & 4th-year degree student cohorts.</p>
             
             <div className="mb-6">
-              <span className="text-4xl font-black text-slate-900">₹500</span>
-              <span className="text-slate-500 text-sm font-medium"> / student / year</span>
+              <span className="text-4xl font-black text-slate-900">Contact us</span>
             </div>
 
             <ul className="space-y-3 mb-8">
@@ -80,8 +79,7 @@ export default function Pricing() {
             <p className="text-slate-600 text-sm mb-6">Self-paced 12-month access to interview prep, scorecards, and skill assessments.</p>
             
             <div className="mb-6">
-              <span className="text-4xl font-black text-slate-900">₹500</span>
-              <span className="text-slate-500 text-sm font-medium"> / year</span>
+              <span className="text-4xl font-black text-slate-900">Contact us</span>
             </div>
 
             <ul className="space-y-3 mb-8">

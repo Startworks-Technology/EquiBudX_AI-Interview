@@ -216,14 +216,16 @@ export default function InterviewRoom() {
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    // Try to find a friendly Indian Female voice
-    const indianFemaleVoice = voices.find(v => v.lang === 'en-IN' && (v.name.includes('Female') || v.name.includes('Heera') || v.name.includes('Google'))) 
-                           || voices.find(v => v.lang === 'en-IN')
-                           || voices.find(v => v.lang.startsWith('en-') && v.name.includes('Female'))
-                           || voices[0];
+    let voices = window.speechSynthesis.getVoices();
+    
+    // Try to find ANY Indian voice, prioritizing female
+    const indianVoice = voices.find(v => (v.lang === 'en-IN' || v.lang === 'hi-IN') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('heera') || v.name.toLowerCase().includes('neerja')))
+                     || voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN')
+                     || voices.find(v => v.name.toLowerCase().includes('india'))
+                     || voices.find(v => v.lang.startsWith('en-') && v.name.toLowerCase().includes('female'))
+                     || voices[0];
                            
-    if (indianFemaleVoice) utterance.voice = indianFemaleVoice;
+    if (indianVoice) utterance.voice = indianVoice;
     
     // Make the tone a bit softer and friendlier
     utterance.pitch = 1.1; 

@@ -81,14 +81,16 @@ export default function InterviewRoom() {
     
     const utterance = new SpeechSynthesisUtterance(text);
     // Try to find a good English voice
-    const voices = window.speechSynthesis.getVoices();
-    // Try to find a friendly Indian Female voice
-    const indianFemaleVoice = voices.find(v => v.lang === 'en-IN' && (v.name.includes('Female') || v.name.includes('Heera') || v.name.includes('Google'))) 
-                           || voices.find(v => v.lang === 'en-IN')
-                           || voices.find(v => v.lang.startsWith('en-') && v.name.includes('Female'))
-                           || voices[0];
+    let voices = window.speechSynthesis.getVoices();
+    
+    // Try to find ANY Indian voice, prioritizing female
+    const indianVoice = voices.find(v => (v.lang === 'en-IN' || v.lang === 'hi-IN') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('heera') || v.name.toLowerCase().includes('neerja')))
+                     || voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN')
+                     || voices.find(v => v.name.toLowerCase().includes('india'))
+                     || voices.find(v => v.lang.startsWith('en-') && v.name.toLowerCase().includes('female'))
+                     || voices[0];
                            
-    if (indianFemaleVoice) utterance.voice = indianFemaleVoice;
+    if (indianVoice) utterance.voice = indianVoice;
     
     utterance.rate = 0.95;
     utterance.pitch = 1.1;

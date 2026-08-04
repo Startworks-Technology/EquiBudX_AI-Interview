@@ -217,8 +217,17 @@ export default function InterviewRoom() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find(v => v.lang.startsWith('en-') && v.name.includes('Google')) || voices[0];
-    if (englishVoice) utterance.voice = englishVoice;
+    // Try to find a friendly Indian Female voice
+    const indianFemaleVoice = voices.find(v => v.lang === 'en-IN' && (v.name.includes('Female') || v.name.includes('Heera') || v.name.includes('Google'))) 
+                           || voices.find(v => v.lang === 'en-IN')
+                           || voices.find(v => v.lang.startsWith('en-') && v.name.includes('Female'))
+                           || voices[0];
+                           
+    if (indianFemaleVoice) utterance.voice = indianFemaleVoice;
+    
+    // Make the tone a bit softer and friendlier
+    utterance.pitch = 1.1; 
+    utterance.rate = 0.95; 
 
     window.speechSynthesis.speak(utterance);
   };

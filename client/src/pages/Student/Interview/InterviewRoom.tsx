@@ -82,11 +82,16 @@ export default function InterviewRoom() {
     const utterance = new SpeechSynthesisUtterance(text);
     // Try to find a good English voice
     const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find(v => v.lang.startsWith('en-') && v.name.includes('Google')) || voices[0];
-    if (englishVoice) utterance.voice = englishVoice;
+    // Try to find a friendly Indian Female voice
+    const indianFemaleVoice = voices.find(v => v.lang === 'en-IN' && (v.name.includes('Female') || v.name.includes('Heera') || v.name.includes('Google'))) 
+                           || voices.find(v => v.lang === 'en-IN')
+                           || voices.find(v => v.lang.startsWith('en-') && v.name.includes('Female'))
+                           || voices[0];
+                           
+    if (indianFemaleVoice) utterance.voice = indianFemaleVoice;
     
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
+    utterance.rate = 0.95;
+    utterance.pitch = 1.1;
     window.speechSynthesis.speak(utterance);
   };
 

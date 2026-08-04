@@ -1,7 +1,23 @@
 import React from 'react';
 import { MessageSquarePlus } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const FloatingFeedback = () => {
+  const location = useLocation();
+  
+  // Hide the feedback button on focus-intensive screens
+  const hiddenPaths = [
+    '/student/interview', 
+    '/student/assignments', 
+    '/student/course',
+    '/quiz',
+    '/scorecard'
+  ];
+  
+  const isHidden = hiddenPaths.some(path => location.pathname.startsWith(path));
+
+  if (isHidden) return null;
+
   return (
     <a
       href="https://docs.google.com/forms/d/e/1FAIpQLSeUF4WKWAx7yn85lcgjXgpoULK_-R-8fbVjEjX2w0B0g-3mDA/viewform?usp=dialog"

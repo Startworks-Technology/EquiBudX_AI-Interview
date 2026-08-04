@@ -57,7 +57,7 @@ export default function Pricing() {
             href="mailto:lionel@equibudx.com"
             className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-600 transition-colors shadow-sm block text-center"
           >
-            Contact us
+            Please contact for pricing
           </a>
         </div>
 
@@ -98,7 +98,7 @@ export default function Pricing() {
             href="mailto:lionel@equibudx.com"
             className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-500 transition-colors shadow-sm block text-center"
           >
-            Contact us
+            Please contact for pricing
           </a>
         </div>
 

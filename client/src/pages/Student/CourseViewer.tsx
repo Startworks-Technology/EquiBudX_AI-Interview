@@ -88,9 +88,34 @@ export default function CourseViewer() {
   const activeModule = course.modules[activeModuleIndex];
 
   const cleanTitle = (rawTitle: string, index: number) => {
-    // Strip duplicate numbers like "1. 1. Intro"
+    if (rawTitle.startsWith('Module') || rawTitle.startsWith('Phase')) {
+      return rawTitle;
+    }
     const cleaned = rawTitle.replace(/^\d+[\.\s\-]+/, '');
     return `${index + 1}. ${cleaned}`;
+  };
+
+  const renderModuleButton = (mod: any, idx: number) => {
+    const isActive = activeModuleId === mod.id;
+    return (
+      <button 
+        key={mod.id}
+        onClick={() => {
+          navigate(`/student/course/${course.id}/module/${mod.id}`);
+          setMobileSidebarOpen(false);
+        }}
+        className={`w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition-all ${
+          isActive 
+            ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary shadow-sm' 
+            : 'hover:bg-slate-100 text-slate-700 font-medium'
+        }`}
+      >
+        <div className={`mt-0.5 flex-shrink-0 ${isActive ? 'text-primary' : 'text-slate-400'}`}>
+          <BookOpen className="w-4 h-4" />
+        </div>
+        <span className="text-sm leading-snug">{cleanTitle(mod.title, idx)}</span>
+      </button>
+    );
   };
 
   const handleNext = () => {
@@ -163,30 +188,27 @@ export default function CourseViewer() {
               </span>
             </div>
 
-            <div className="space-y-1">
-              {course.modules.map((mod, idx) => {
-                const isActive = activeModuleId === mod.id;
-                return (
-                  <button 
-                    key={mod.id}
-                    onClick={() => {
-                      navigate(`/student/course/${course.id}/module/${mod.id}`);
-                      setMobileSidebarOpen(false);
-                    }}
-                    className={`w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition-all ${
-                      isActive 
-                        ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary shadow-sm' 
-                        : 'hover:bg-slate-100 text-slate-700 font-medium'
-                    }`}
-                  >
-                    <div className={`mt-0.5 flex-shrink-0 ${isActive ? 'text-primary' : 'text-slate-400'}`}>
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <span className="text-sm leading-snug">{cleanTitle(mod.title, idx)}</span>
-                  </button>
-                );
-              })}
-            </div>
+            {course.id === 'full-stack' ? (
+              <>
+                <div className="mb-3 mt-2 px-2 text-[10px] font-black uppercase tracking-widest text-blue-500">
+                  Frontend Track
+                </div>
+                <div className="space-y-1 mb-6">
+                  {course.modules.slice(0, 14).map((mod, idx) => renderModuleButton(mod, idx))}
+                </div>
+                
+                <div className="mb-3 mt-6 px-2 text-[10px] font-black uppercase tracking-widest text-emerald-600">
+                  Backend Track
+                </div>
+                <div className="space-y-1">
+                  {course.modules.slice(14).map((mod, idx) => renderModuleButton(mod, idx + 14))}
+                </div>
+              </>
+            ) : (
+              <div className="space-y-1">
+                {course.modules.map((mod, idx) => renderModuleButton(mod, idx))}
+              </div>
+            )}
 
             <h2 className="text-xs font-black uppercase tracking-wider text-muted-foreground mt-8 mb-4">Final Certification</h2>
             <button 

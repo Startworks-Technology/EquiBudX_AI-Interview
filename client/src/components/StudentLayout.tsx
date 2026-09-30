@@ -32,12 +32,11 @@ export default function StudentLayout() {
 
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-4">
-              Learning
+              Overview
             </div>
             
             <NavLink 
               to="/student/dashboard" 
-              end
               className={({ isActive }) => 
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold transition-all duration-200 ${
                   isActive 
@@ -47,11 +46,11 @@ export default function StudentLayout() {
               }
             >
               <BookOpen className="w-5 h-5" />
-              Curriculum
+              Dashboard
             </NavLink>
-            
+
             <NavLink 
-              to="/student/resources" 
+              to="/student/curriculum" 
               className={({ isActive }) => 
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold transition-all duration-200 ${
                   isActive 
@@ -61,7 +60,7 @@ export default function StudentLayout() {
               }
             >
               <Library className="w-5 h-5" />
-              Resources
+              Curriculum
             </NavLink>
 
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-8">
@@ -79,9 +78,10 @@ export default function StudentLayout() {
               }
             >
               <ClipboardList className="w-5 h-5" />
-              Assignments
+              Pre-Screening
             </NavLink>
 
+            {/*
             <NavLink 
               to="/student/interview" 
               className={({ isActive }) => 
@@ -95,6 +95,7 @@ export default function StudentLayout() {
               <Mic className="w-5 h-5" />
               AI Interview
             </NavLink>
+            */}
 
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-3 mt-8">
               Account

@@ -7,6 +7,8 @@ import userRoutes from './routes/user';
 import interviewRoutes from './routes/interview';
 import collegeRoutes from './routes/college';
 import adminRoutes from './routes/admin';
+import bootcampRoutes from './routes/bootcamp';
+import leadRoutes from './routes/lead';
 import prisma from './prisma';
 
 const app = express();
@@ -20,6 +22,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/interview', interviewRoutes);
 app.use('/api/college', collegeRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/bootcamp', bootcampRoutes);
+app.use('/api/leads', leadRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'EquiBudX Backend is running!' });

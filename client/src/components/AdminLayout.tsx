@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, GraduationCap, Users, LogOut, Menu } from 'lucide-react';
+import { LayoutDashboard, GraduationCap, Users, LogOut, Menu, FileText, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function AdminLayout() {
@@ -63,6 +63,62 @@ export default function AdminLayout() {
             >
               <Users className="w-5 h-5" />
               Students
+            </NavLink>
+            
+            <NavLink 
+              to="/admin/applicants/new" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-slate-900 text-white' 
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`
+              }
+            >
+              <GraduationCap className="w-5 h-5" />
+              Applied Users
+            </NavLink>
+
+            <NavLink 
+              to="/admin/applicants/review" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-slate-900 text-white' 
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`
+              }
+            >
+              <FileText className="w-5 h-5" />
+              Test Review
+            </NavLink>
+
+            <NavLink 
+              to="/admin/applicants/accepted" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-slate-900 text-white' 
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`
+              }
+            >
+              <CheckCircle className="w-5 h-5" />
+              Accepted
+            </NavLink>
+
+            <NavLink 
+              to="/admin/leads" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-slate-900 text-white' 
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                }`
+              }
+            >
+              <Users className="w-5 h-5" />
+              Marketing Leads
             </NavLink>
             
             <NavLink 

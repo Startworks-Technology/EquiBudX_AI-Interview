@@ -13,6 +13,7 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,7 +109,7 @@ export default function Register() {
       <div className="hidden md:flex flex-col justify-center items-center bg-slate-900 text-white p-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
         <div className="relative z-10 max-w-md">
-          <h1 className="text-4xl font-black mb-6 leading-tight">Start your career with EquiBudX.</h1>
+          <h1 className="text-4xl font-black mb-6 leading-tight">Start your career with Startworks Learning.</h1>
           <p className="text-lg text-slate-300 leading-relaxed">
             Join thousands of students from top degree colleges who are passing their technical rounds.
           </p>
@@ -122,7 +123,7 @@ export default function Register() {
             <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
-            <Link to="/" className="text-xl font-black tracking-tighter text-primary">EquiBudX.</Link>
+            <Link to="/" className="text-xl font-black tracking-tighter text-primary">Startworks Learning.</Link>
           </div>
           
           <h2 className="text-3xl font-bold text-foreground mb-2">Create Account</h2>

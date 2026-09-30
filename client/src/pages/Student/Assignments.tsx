@@ -1,15 +1,15 @@
 import { useState, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { 
   Code, Atom, Server, Database, Network, Palette, FileType, Binary, Globe, GitBranch,
-  ChevronRight, ArrowLeft, CheckCircle, XCircle, Clock, Trophy, RotateCcw, BookOpen, X, Download
+  ChevronRight, ArrowLeft, CheckCircle, XCircle, Clock, Trophy, RotateCcw, BookOpen, X, Download, Loader
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { useAuth } from '../../contexts/AuthContext';
 
-// We'll import from quizzes.ts
-import { quizModules } from '../../data/assignments/quizzes';
-import type { QuizModule } from '../../data/assignments/quizzes';
+// We'll import from bootcampTests.ts for the pre-screening logic
+import { bootcampTests as quizModules } from '../../data/assignments/bootcampTests';
+import type { QuizModule } from '../../data/assignments/bootcampTests';
 
 const iconMap: Record<string, React.ReactNode> = {
   'code': <Code className="w-7 h-7" />,
@@ -42,10 +42,12 @@ type ViewState =
   | { mode: 'quiz'; moduleId: string; skillId: string; questionIndex: number; answers: (number | null)[] }
   | { mode: 'results'; moduleId: string; skillId: string; answers: (number | null)[] };
 
-export default function Assignments() {
+export default function PreScreening() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [view, setView] = useState<ViewState>({ mode: 'grid' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectedModuleId = searchParams.get('module');
   const selectedModuleForModal = quizModules.find(m => m.id === selectedModuleId) || null;
@@ -81,7 +83,7 @@ export default function Assignments() {
     setView({ ...view, answers: newAnswers });
   };
 
-  const nextQuestion = () => {
+  const nextQuestion = async () => {
     if (view.mode !== 'quiz') return;
     const mod = quizModules.find(m => m.id === view.moduleId);
     if (!mod) return;
@@ -91,8 +93,28 @@ export default function Assignments() {
     if (view.questionIndex < skill.questions.length - 1) {
       setView({ ...view, questionIndex: view.questionIndex + 1 });
     } else {
-      // Quiz complete → show results
-      setView({ mode: 'results', moduleId: view.moduleId, skillId: view.skillId, answers: view.answers });
+      // Quiz complete → Auto-score and submit to backend
+      setIsSubmitting(true);
+      try {
+        const correctCount = view.answers.reduce<number>((acc, answer, idx) => {
+          return acc + (answer === skill.questions[idx].correctAnswer ? 1 : 0);
+        }, 0);
+        const percentage = Math.round((correctCount / skill.questions.length) * 100);
+
+        await fetch('http://localhost:5000/api/bootcamp/score', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ scorePercentage: percentage })
+        });
+      } catch (err) {
+        console.error('Failed to submit score:', err);
+      } finally {
+        setIsSubmitting(false);
+        setView({ mode: 'results', moduleId: view.moduleId, skillId: view.skillId, answers: view.answers });
+      }
     }
   };
 
@@ -108,9 +130,9 @@ export default function Assignments() {
     return (
       <div className="h-full flex flex-col bg-slate-50">
         <div className="px-8 py-8 bg-white border-b border-slate-200 flex-shrink-0">
-          <h1 className="text-3xl font-black text-slate-900 mb-2">Assignments</h1>
+          <h1 className="text-3xl font-black text-slate-900 mb-2">Bootcamp Pre-Screening</h1>
           <p className="text-slate-500 font-medium">
-            Test your knowledge with topic-based quizzes. Pick a module to start.
+            Clear the eligibility test to unlock your bootcamp enrollment.
           </p>
         </div>
 
@@ -312,9 +334,14 @@ export default function Assignments() {
 
             <button
               onClick={nextQuestion}
-              className={`px-6 py-3 rounded-xl font-bold text-white transition-colors shadow-sm ${colors.badge} hover:opacity-90`}
+              disabled={isSubmitting}
+              className={`px-6 py-3 rounded-xl font-bold text-white transition-colors shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 ${colors.badge} hover:opacity-90`}
             >
-              {view.questionIndex === skill.questions.length - 1 ? 'Submit Quiz' : 'Next'}
+              {isSubmitting && view.questionIndex === skill.questions.length - 1 ? (
+                <Loader className="w-5 h-5 animate-spin" />
+              ) : (
+                view.questionIndex === skill.questions.length - 1 ? 'Submit Test' : 'Next'
+              )}
             </button>
           </div>
         </div>
@@ -453,10 +480,10 @@ export default function Assignments() {
                   <RotateCcw className="w-4 h-4" /> Retry Quiz
                 </button>
                 <button
-                  onClick={() => setView({ mode: 'grid' })}
+                  onClick={() => navigate('/student/dashboard')}
                   className={`px-6 py-3 rounded-xl font-bold text-white ${colors.badge} hover:opacity-90 transition-colors shadow-sm`}
                 >
-                  Back to Modules
+                  Go to Dashboard
                 </button>
               </div>
             </div>

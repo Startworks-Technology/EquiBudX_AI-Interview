@@ -1,16 +1,20 @@
 export default function FAQ() {
   const faqs = [
     {
+      q: "Who can join the bootcamp?",
+      a: "Our bootcamps are designed for 3rd and 4th year degree students, as well as recent graduates who want to bridge the gap between academic knowledge and industry requirements to secure a high-paying job in tech."
+    },
+    {
+      q: "Do you provide placement assistance?",
+      a: "Yes! We offer 100% placement assistance. This includes resume building, LinkedIn optimization, AI-powered mock interviews, and direct referrals to our network of top tech partner companies."
+    },
+    {
+      q: "Are the classes live or pre-recorded?",
+      a: "Our curriculum features a highly effective hybrid model. You get structured, deep-dive on-demand modules that you can learn at your own pace, paired with 1:1 live expert mentorship to resolve your doubts instantly."
+    },
+    {
       q: "Do I get a certificate when I finish?",
-      a: "Yes! Once you pass the final MCQ assignment for a course, you will unlock a verified digital certificate that you can link on your resume or LinkedIn."
-    },
-    {
-      q: "Are the tests hard?",
-      a: "They are designed to mimic actual technical screening rounds from top tech companies. If you pay attention during the course modules, you will be well prepared."
-    },
-    {
-      q: "Can my college pay for me?",
-      a: "Absolutely. We have a College Admin portal. If your college is partnered with EquiBudX, your access is completely free."
+      a: "Absolutely. Upon successful completion of all modules and the final capstone project, you will unlock a verified digital certificate that you can proudly showcase on your resume and LinkedIn."
     }
   ];
 

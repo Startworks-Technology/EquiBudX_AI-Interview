@@ -56,26 +56,80 @@ export default function CourseOverview() {
             Concept Map
           </h2>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {course.modules.map((mod) => (
-              <button
-                key={mod.id}
-                onClick={() => navigate(`/student/course/${course.id}/module/${mod.id}`)}
-                className="group bg-white border border-slate-200 rounded-2xl p-6 text-left hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden flex flex-col h-full"
-              >
-                {/* Decorative background shape */}
-                <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
-                
-                <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-primary transition-colors relative z-10">
-                  {mod.title}
+          {course.id === 'full-stack' ? (
+            <div className="space-y-12">
+              {/* Frontend Track */}
+              <div>
+                <h3 className="text-xl font-bold text-slate-500 uppercase tracking-wider mb-6 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-black">1</span>
+                  Frontend Track
                 </h3>
-                
-                <div className="mt-auto relative z-10 flex items-center gap-2 text-sm font-bold text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                  Read Concept <ArrowLeft className="w-4 h-4 rotate-180" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {course.modules.slice(0, 14).map((mod) => (
+                    <button
+                      key={mod.id}
+                      onClick={() => navigate(`/student/course/${course.id}/module/${mod.id}`)}
+                      className="group bg-white border border-slate-200 rounded-2xl p-6 text-left hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 relative overflow-hidden flex flex-col h-full"
+                    >
+                      <div className="absolute -right-8 -top-8 w-24 h-24 bg-blue-500/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
+                      <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors relative z-10">
+                        {mod.title}
+                      </h3>
+                      <div className="mt-auto relative z-10 flex items-center gap-2 text-sm font-bold text-blue-600 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                        Read Concept <ArrowLeft className="w-4 h-4 rotate-180" />
+                      </div>
+                    </button>
+                  ))}
                 </div>
-              </button>
-            ))}
-          </div>
+              </div>
+
+              {/* Backend Track */}
+              <div>
+                <h3 className="text-xl font-bold text-slate-500 uppercase tracking-wider mb-6 flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-black">2</span>
+                  Backend Track
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {course.modules.slice(14).map((mod) => (
+                    <button
+                      key={mod.id}
+                      onClick={() => navigate(`/student/course/${course.id}/module/${mod.id}`)}
+                      className="group bg-white border border-slate-200 rounded-2xl p-6 text-left hover:border-emerald-500/50 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300 relative overflow-hidden flex flex-col h-full"
+                    >
+                      <div className="absolute -right-8 -top-8 w-24 h-24 bg-emerald-500/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
+                      <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors relative z-10">
+                        {mod.title}
+                      </h3>
+                      <div className="mt-auto relative z-10 flex items-center gap-2 text-sm font-bold text-emerald-600 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                        Read Concept <ArrowLeft className="w-4 h-4 rotate-180" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {course.modules.map((mod) => (
+                <button
+                  key={mod.id}
+                  onClick={() => navigate(`/student/course/${course.id}/module/${mod.id}`)}
+                  className="group bg-white border border-slate-200 rounded-2xl p-6 text-left hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 relative overflow-hidden flex flex-col h-full"
+                >
+                  {/* Decorative background shape */}
+                  <div className="absolute -right-8 -top-8 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500 ease-out" />
+                  
+                  <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-primary transition-colors relative z-10">
+                    {mod.title}
+                  </h3>
+                  
+                  <div className="mt-auto relative z-10 flex items-center gap-2 text-sm font-bold text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    Read Concept <ArrowLeft className="w-4 h-4 rotate-180" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
           
           {/* Final Challenge Card */}
           <div className="mt-12">

@@ -225,4 +225,44 @@ router.post('/colleges', authenticateToken, requireRole(['admin']), async (req: 
   }
 });
 
+/**
+ * GET /api/admin/bootcamps
+ * List all bootcamp applicants and their status.
+ */
+router.get('/bootcamps', authenticateToken, requireRole(['admin']), async (req: any, res: any) => {
+  try {
+    const apps = await prisma.bootcampApplication.findMany({
+      include: {
+        user: { select: { firstName: true, lastName: true, email: true } }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json(apps);
+  } catch (error) {
+    console.error('Admin fetch bootcamps error:', error);
+    res.status(500).json({ error: 'Failed to fetch bootcamp applications' });
+  }
+});
+
+/**
+ * PATCH /api/admin/bootcamps/:id/status
+ * Manually update a bootcamp application status.
+ */
+router.patch('/bootcamps/:id/status', authenticateToken, requireRole(['admin']), async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // PENDING_TEST, UNDER_REVIEW, SELECTED, WAITLISTED, REJECTED
+    
+    const updated = await prisma.bootcampApplication.update({
+      where: { id },
+      data: { status }
+    });
+    
+    res.json({ success: true, application: updated });
+  } catch (error) {
+    console.error('Admin update bootcamp error:', error);
+    res.status(500).json({ error: 'Failed to update status' });
+  }
+});
+
 export default router;
